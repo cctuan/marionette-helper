@@ -182,9 +182,27 @@ MarionetteHelper.prototype = {
   },
 
   /**
+   * select specific option from target input element
+   * @param {String} el css selector.
+   * @param {String} inputText text for the input.
+   */
+  tapInput: function(el, inputText) {
+    this.client.executeScript(function(query, value) {
+      var item = document.querySelector(query);
+      item.value = value;
+      var evt = new Event('input', {
+        'view': window,
+        'bubbles': true,
+        'cancelable': true
+      });
+      item.dispatchEvent(evt);
+    }, [el, inputText]);
+  },
+
+  /**
    * select specific option from target select element
    * @param {Marionette.Element|String} el element or some css selector.
-   * @param {String} optionText text for the option
+   * @param {String} optionText text for the option.
    */
   tapSelectOption: function(el, optionText) {
     var selectedOption = null;
